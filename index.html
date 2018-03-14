@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Seat Select</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="src/main.css" />
+</head>
+<body>
+  <div id="root">
+    <div id="seat-container"></div>
+  </div>
+  <script>
+    const WIDTH = 2000
+    const HEIGHT = 30
+    const seatStatus = []
+
+    function init() {
+      const container = document.getElementById('seat-container')
+      const startTime = new Date().getTime()
+      let col = 0
+      let stack = 0
+      const stackLength = 1
+      paintCol = function() {
+        seatStatus.push([])
+        const fragment = document.createDocumentFragment()
+        const rowSeat = document.createElement('div')
+        rowSeat.className = 'seat-col'
+        for (let row = 0; row < HEIGHT; row++ ) {
+          seatStatus[col].push(false)
+          rowSeat.appendChild(createSeat(col, row))
+        }
+        fragment.appendChild(rowSeat)
+        container.appendChild(fragment)
+        if (col < WIDTH) {
+          stack ++
+          if (stack < stackLength) paintCol()
+          else {
+            setTimeout(paintCol, 0)
+            stack = 0
+          } 
+        } 
+        col++
+        console.log(new Date().getTime() - startTime)
+      }
+      paintCol()
+      // for (let i = 0; i < WIDTH; i++ ) {
+      //   (function() {
+      //     const tempI = i
+      //     setTimeout(() => {
+      //       seatStatus.push([])
+      //       const fragment = document.createDocumentFragment()
+      //       const row = document.createElement('div')
+      //       row.className = 'seat-col'
+      //       for (let j = 0; j < HEIGHT; j++ ) {
+      //         seatStatus[tempI].push(false)
+      //         row.appendChild(createSeat(tempI, j))
+      //       }
+      //       fragment.appendChild(row)
+      //       container.appendChild(fragment)
+      //     }, 0)
+      //   })(i)
+      // }
+    }
+
+    function createSeat(col, row) {
+      const el = document.createElement('img')
+      el.className = 'seat-unchoose'
+      el.setAttribute('src', 'src/seat.svg')
+      el.addEventListener('click', function(ev) {
+        console.log(col, row)
+        seatStatus[col][row] = !seatStatus[col][row]
+        el.className = seatStatus[col][row] ? 'seat-choose' : 'seat-unchoose'
+        seatStatus[col][row] ? el.setAttribute('src', 'src/seat-choose.svg') : el.setAttribute('src', 'src/seat.svg')
+      })
+      return el
+    }
+    init()
+  </script>
+</body>
+</html>

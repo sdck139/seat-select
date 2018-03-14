@@ -1,0 +1,24 @@
+#seat-container {
+  display: flex;
+}
+
+.seat-col {
+  width: 30px;
+  display: inline-block;
+}
+
+.seat-unchoose {
+  width: 20px;
+  height: 20px;
+  /* border: 1px solid black; */
+  display: inline-block;
+  margin: 5px;
+}
+
+.seat-choose {
+  width: 20px;
+  height: 20px;
+  color: black;
+  display: inline-block;
+  margin: 5px;
+}
